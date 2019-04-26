@@ -8,7 +8,6 @@ from query import tokenize_query
 import numpy as np
 from collections import defaultdict
 
-
 app = Flask(__name__)
 
 token2id = SqliteDict('phase2-token2id.sqlite', autocommit=True)
@@ -195,3 +194,4 @@ def sortDictionary(TokenWeights):
 if __name__ == '__main__':
     pass
     # app.run(host="0.0.0.0", port="5000", debug = True)
+    # app.run()
