@@ -105,9 +105,10 @@ def result():
         parentLinks = []
         childLinks = []
         for page in sortedSearchResults[:50]:
-            pageID = page[0]
+            pageID, pageScore = page
+            # pageID = page[0]
+            # pageScore = page[1]
             pageIDList.append(pageID)
-            pageScore = page[1]
             pageScores.append(pageScore)
             page_title, page_url, last_modified, page_size, keyword_count, maxfreqBody = metadataDB[pageID]
             if page_title == "":
@@ -126,8 +127,6 @@ def result():
                 page_size /= 1024
                 suffix = ' mb'
             pageSizes.append(str(int(page_size))+suffix)
-            
-            
             
             pageTokenPositions = token_positionsDB[pageID]
             tempDict = {}
