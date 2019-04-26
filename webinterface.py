@@ -9,7 +9,7 @@ import numpy as np
 from collections import defaultdict
 
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 token2id = SqliteDict('phase2-token2id.sqlite', autocommit=True)
 id2token = dict((v,k) for k,v in token2id.items())
@@ -23,11 +23,11 @@ page_title_token_positionsDB = SqliteDict('phase2-page_title_token_positions.sql
 page_title_inverted_index = SqliteDict('phase2-page_title_inverted_index.sqlite', autocommit=False)
 
 
-@application.route('/')
+@app.route('/')
 def startpage():
 	return render_template('startpage.html')
 
-@application.route('/result',methods = ['POST', 'GET'])
+@app.route('/result',methods = ['POST', 'GET'])
 def result():
 	if request.method == 'POST':
 		result = request.form
@@ -194,4 +194,4 @@ def sortDictionary(TokenWeights):
 
 if __name__ == '__main__':
     pass
-    # application.run(host="0.0.0.0", port="5000", debug = True)
+    # app.run(host="0.0.0.0", port="5000", debug = True)
