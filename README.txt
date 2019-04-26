@@ -4,16 +4,20 @@ bash setup.sh
 
 # If you aren't using centos7, you will have to read the setup.sh and do the equivalent commands for your OS.
 
-# After setup, to run the crawler for phase 1 (scrape 30 pages from cse website), run:
+# After setup, run the crawler. It is currently set to only crawl 30 pages. 
+# Remove the limit in crawl.py to crawl over all cse.ust.hk websites.
+# Note that the full crawling process will take a few hours if no limit is set.
 python3.6 crawler.py
 
-# Running it again should scrape 29 additional pages and add them into the database.
 
-# To create the txt file of the scraper results, run:
-python3.6 phase1.py
+# To run the search engine on localhost, run:
+python3.6 webinterface.py
+
+# It will then be accessible on the same computer via localhost on port 5000 (i think) (127.0.0.1:5000)
 
 
-
+# Because we couldn't figure out how to allow other devices to access the server, we hosted our search engine on Heroku
+# It is accessible at: https://infinite-reef-85666.herokuapp.com
 
 # ============
 #
@@ -99,6 +103,5 @@ python3.6 phase1.py
 # they access elements using a hash function on the key, 
 # which allows for average-case constant time element access, better than the log(n) of sorted binary trees.
 #
-# While our original design used only 1 table for the webpages (instead of the 3), 
-# the python module we used for the database (sqlitedict) had limitations on the 
-# complexity of the value objects which prevented it from storing large or multi-type Python dictionaries.
+# The python module we used for the database (sqlitedict) has limitations on the 
+# complexity of the value objects which prevents it from storing large or multi-type Python dictionaries.
