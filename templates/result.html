@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <style>
+            .padd {
+            padding-left: 10%;
+            }
+            #container {
+        text-align:left;
+            }
+            #score, #pagetitle{
+            display:inline;
+            }
+            #pagetitle {
+                padding-left: 1%;
+            }
+        </style>
+    </head>
+	<body>
+		<form action = "/result" method = "POST">
+            <h1>Result page</h1>
+            <div class="form-group">
+                <input type="text" required class="form-control" id="query" value="{{query}}" name="query" style="height:30px;width:400px;font-size:12pt;">
+            </div>
+            <div class="buttonHolder">
+                <button id="button" type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+        <br>
+        {% for i in range(50): %}
+            <div id="container">
+                <div id="score"> {{ pageScores[i] }} </div>
+                <a href="{{urls[i]}}" id="pagetitle">{{ pageTitles[i] }} </a>
+            <div/>
+            <div>
+                <a href="{{urls[i]}}" class="padd"> {{ urls[i] }} </a>
+            <div/>
+            <div class="padd">Last Modified: {{ dates[i] }} </div>
+            <div class="padd">Page Size: {{ pageSizes[i] }} </div>
+
+            {% with currentPage = pageIDList[i] %}
+                {% with tokenFreqDict = wordFreq[currentPage] %}
+                    {% for list in tokenFreqDict %}
+                        <div class="padd"> {{ list[0] }} {{ list[1] }}; </div>
+                    {% endfor %}
+                {% endwith %}
+            {% endwith %}
+            <div class="padd">Parent Links:</div>
+            {% with parentLinks = parentLinks[i] %}
+                {% for parentLink in parentLinks %}
+                    <a href="{{parentLink}}" class="padd"> {{ parentLink }} </a><br>
+                {% endfor %}
+            {% endwith %}
+            <div class="padd">Child Links:</div>
+            {% with childLinks = childLinks[i] %}
+                {% for childLink in childLinks %}
+                    <a href="{{childLink}}" class="padd"> {{ childLink }} </a><br>
+                {% endfor %}
+            {% endwith %}
+            <br>
+        {% endfor %}
+
+	 </body>
+</html>
