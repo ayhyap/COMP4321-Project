@@ -524,5 +524,5 @@ if __name__ == '__main__':
         pages_to_scrape = np.loadtxt('pages_to_scrape.txt', dtype=str).tolist()
     except:
         pages_to_scrape = None
-    crawl('http://www.cse.ust.hk', pages_to_scrape = pages_to_scrape, url_check = 'cse.ust.hk')
+    # crawl('http://www.cse.ust.hk', pages_to_scrape = pages_to_scrape, url_check = 'cse.ust.hk')
     # crawl('http://www.cse.ust.hk', pages_to_scrape = pages_to_scrape, url_check = 'cse.ust.hk', limit = 10)
