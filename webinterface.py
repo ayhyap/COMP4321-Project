@@ -1,9 +1,6 @@
 import math
-import pickle
-import datetime as dt
 import datetime as dt
 import numpy as np
-import heapq
 from sqlitedict import SqliteDict
 from flask import Flask, render_template, request
 from query import tokenize_query
@@ -27,7 +24,7 @@ page_title_inverted_index = SqliteDict('phase2-page_title_inverted_index.sqlite'
 # cache heavily accessed dicts in main memory as python dicts
 pageID2tf = {}
 for key in metadataDB.keys():
-    pageID2tf[int(key)] = metadataDB[key][5]
+    pageID2tf[int(key)] = np.uint16(metadataDB[key][5])
 
 invertedIndex = dict((int(k),v) for k,v in invertedIndex.items())
 page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
