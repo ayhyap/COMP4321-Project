@@ -27,7 +27,7 @@ for key in metadataDB.keys():
     pageID2tf[int(key)] = np.uint16(metadataDB[key][5])
 
 invertedIndex = dict((int(k),v) for k,v in invertedIndex.items())
-page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
+# page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
 
 # invert mappings
 id2token = SqliteDict('phase2-id2token.sqlite', journal_mode='OFF')
@@ -184,19 +184,24 @@ def searchEngine(query, invertedIndexFile, title = False):
 def searchEnginePhrase(queryPhrases, invertedIndexFile, title = False):
     scores = defaultdict(int)
     for phrase in queryPhrases:
-        tempList = []
+        invertedTokens = []
+        containsToken = []
         for tokenID in phrase:
-            tempList.append(list(invertedIndexFile[tokenID].keys()))
-        candidates = tempList[0]
-        for i in range(1,len(tempList)):
-            candidates = np.intersect1d(candidates, tempList[i], True).tolist()
+            invertedTokens.append(invertedIndexFile[tokenID])
+            # containsToken.append(list(invertedIndexFile[tokenID].keys()))
+            containsToken.append(list(invertedTokens[-1].keys()))
+        candidates = containsToken[0]
+        for i in range(1,len(containsToken)):
+            candidates = np.intersect1d(candidates, containsToken[i], True).tolist()
         pagePhraseFrequency = {}
         for pageID in candidates:
             phraseFrequency = 0
-            for startingPosition in invertedIndexFile[phrase[0]][pageID]:
+            # for startingPosition in invertedIndexFile[phrase[0]][pageID]:
+            for startingPosition in invertedTokens[0][pageID]:
                 for i in range(1, len(phrase)):
                     match = False
-                    for tokenPosition in invertedIndexFile[phrase[i]][pageID]:
+                    # for tokenPosition in invertedIndexFile[phrase[i]][pageID]:
+                    for tokenPosition in invertedTokens[i][pageID]:
                         if tokenPosition == startingPosition + i:
                             match = True
                             break
