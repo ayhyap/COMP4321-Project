@@ -28,11 +28,11 @@ if ham_sandwich:
     # token2id = dict((v,int(k)) for v,k in token2id.items())
     # page2id = dict((v,int(k)) for v,k in page2id.items())
     metadataDB = dict((int(v),k) for v,k in metadataDB.items())
-    linksDB = dict((int(v),k) for v,k in linksDB.items())
-    invertedIndex = dict((int(v),k) for v,k in invertedIndex.items())
-    token_positionsDB = dict((int(v),k) for v,k in token_positionsDB.items())
-    page_title_token_positionsDB = dict((int(v),k) for v,k in page_title_token_positionsDB.items())
-    page_title_inverted_index = dict((int(v),k) for v,k in page_title_inverted_index.items())
+    # linksDB = dict((int(v),k) for v,k in linksDB.items())
+    # invertedIndex = dict((int(v),k) for v,k in invertedIndex.items())
+    # token_positionsDB = dict((int(v),k) for v,k in token_positionsDB.items())
+    # page_title_token_positionsDB = dict((int(v),k) for v,k in page_title_token_positionsDB.items())
+    # page_title_inverted_index = dict((int(v),k) for v,k in page_title_inverted_index.items())
 
 id2token = dict((v,k) for k,v in token2id.items())
 id2page = dict((v,k) for k,v in page2id.items())
@@ -202,7 +202,7 @@ def searchEnginePhrase(queryPhrases, invertedIndexFile, title = False):
                 if match:
                     phraseFrequency += 1
 
-            maxTermFreq = float(np.sqrt(len(page_title_token_positionsDB[pageID])+1) if title else metadataDB[pageID][5])
+            maxTermFreq = (1 if title else int(metadataDB[pageID][5]))
             pagePhraseFrequency[pageID] = phraseFrequency/maxTermFreq 
         df = 0
         for frequency in pagePhraseFrequency.values():
