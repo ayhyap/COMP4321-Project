@@ -12,7 +12,6 @@ from time import process_time
 from numba import jit
 from copy import deepcopy
 
-ham_sandwich = True
 app = Flask(__name__)
 
 token2id = SqliteDict('phase2-token2id.sqlite', journal_mode='OFF')
@@ -24,15 +23,11 @@ token_positionsDB = SqliteDict('phase2-token_positions.sqlite', journal_mode='OF
 page_title_token_positionsDB = SqliteDict('phase2-page_title_token_positions.sqlite', journal_mode='OFF')
 page_title_inverted_index = SqliteDict('phase2-page_title_inverted_index.sqlite', journal_mode='OFF')
 
-if ham_sandwich:
-    # token2id = dict((v,int(k)) for v,k in token2id.items())
-    # page2id = dict((v,int(k)) for v,k in page2id.items())
-    metadataDB = dict((int(v),k) for v,k in metadataDB.items())
-    # linksDB = dict((int(v),k) for v,k in linksDB.items())
-    # invertedIndex = dict((int(v),k) for v,k in invertedIndex.items())
-    # token_positionsDB = dict((int(v),k) for v,k in token_positionsDB.items())
-    # page_title_token_positionsDB = dict((int(v),k) for v,k in page_title_token_positionsDB.items())
-    # page_title_inverted_index = dict((int(v),k) for v,k in page_title_inverted_index.items())
+
+pageID2tf = {}
+for key in metadataDB.keys():
+    pageID2tf[int(key)] = metadataDB[key][5]
+
 
 id2token = dict((v,k) for k,v in token2id.items())
 id2page = dict((v,k) for k,v in page2id.items())
@@ -104,7 +99,7 @@ def result():
             pageIDList.append(pageID)
             pageScore = page[1]
             pageScores.append(pageScore)
-            page_title, page_url, last_modified, page_size, keyword_count, maxfreqBody, maxfreqTitle = metadataDB[pageID]
+            page_title, page_url, last_modified, page_size, keyword_count, maxfreqBody = metadataDB[pageID]
             if page_title == "":
                 page_title = "((No Page Title))"
             pageTitles.append(page_title)
@@ -170,7 +165,8 @@ def searchEngine(query, invertedIndexFile, title = False):
             # maxTermFreq = float(np.sqrt(len(page_title_token_positionsDB[webPageID])+1) if title else metadataDB[webPageID][5])
             # frequency = len(positions)
             # weight = (len(positions) * idf) / float(np.sqrt(len(page_title_token_positionsDB[webPageID])+1) if title else metadataDB[webPageID][5])
-            scores[webPageID] += (len(positions) * idf) / (1 if title else int(metadataDB[webPageID][5]))
+            # scores[webPageID] += (len(positions) * idf) / (1 if title else int(metadataDB[webPageID][5]))
+            scores[webPageID] += (len(positions) * idf) / (1 if title else int(pageID2tf[webPageID]))
         print(process_time()-start, '\t\tCalculateScores')
     return scores
 
@@ -202,7 +198,8 @@ def searchEnginePhrase(queryPhrases, invertedIndexFile, title = False):
                 if match:
                     phraseFrequency += 1
 
-            maxTermFreq = (1 if title else int(metadataDB[pageID][5]))
+            # maxTermFreq = (1 if title else int(metadataDB[pageID][5]))
+            maxTermFreq = (1 if title else int(pageID2tf[pageID]))
             pagePhraseFrequency[pageID] = phraseFrequency/maxTermFreq 
         df = 0
         for frequency in pagePhraseFrequency.values():
