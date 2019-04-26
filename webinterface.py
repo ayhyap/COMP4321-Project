@@ -30,15 +30,6 @@ for key in metadataDB.keys():
 # page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
 
 # invert mappings
-# id2token = SqliteDict('phase2-id2token.sqlite', journal_mode='OFF')
-# for key, value in token2id.items():
-    # id2token[value] = key
-
-# id2page = SqliteDict('phase2-id2page.sqlite', journal_mode='OFF')
-# for key, value in page2id.items():
-    # id2page[value] = key
-
-
 id2token = dict((v,k) for k,v in token2id.items())
 id2page = dict((v,k) for k,v in page2id.items())
 
