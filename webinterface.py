@@ -26,7 +26,7 @@ pageID2tf = {}
 for key in metadataDB.keys():
     pageID2tf[int(key)] = np.uint16(metadataDB[key][5])
 
-invertedIndex = dict((int(k),v) for k,v in invertedIndex.items())
+# invertedIndex = dict((int(k),v) for k,v in invertedIndex.items())
 # page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
 
 # invert mappings
