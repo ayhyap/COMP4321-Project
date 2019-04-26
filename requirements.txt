@@ -1,0 +1,7 @@
+numpy
+sqlitedict
+nltk
+beautifulsoup4
+python-dateutil
+flask
+gunicorn
