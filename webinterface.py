@@ -24,13 +24,26 @@ page_title_token_positionsDB = SqliteDict('phase2-page_title_token_positions.sql
 page_title_inverted_index = SqliteDict('phase2-page_title_inverted_index.sqlite', journal_mode='OFF')
 
 
+# cache heavily accessed dicts in main memory as python dicts
 pageID2tf = {}
 for key in metadataDB.keys():
     pageID2tf[int(key)] = metadataDB[key][5]
 
+invertedIndex = dict((int(k),v) for k,v in invertedIndex.items())
+page_title_inverted_index = dict((int(k),v) for k,v in page_title_inverted_index.items())
 
-id2token = dict((v,k) for k,v in token2id.items())
-id2page = dict((v,k) for k,v in page2id.items())
+# invert mappings
+id2token = SqliteDict('phase2-id2token.sqlite', journal_mode='OFF')
+for key, value in token2id.items():
+    id2token[value] = key
+
+id2page = SqliteDict('phase2-id2page.sqlite', journal_mode='OFF')
+for key, value in page2id.items():
+    id2page[value] = key
+
+
+# id2token = dict((v,k) for k,v in token2id.items())
+# id2page = dict((v,k) for k,v in page2id.items())
 
 @app.route('/')
 def startpage():
@@ -184,7 +197,6 @@ def searchEnginePhrase(queryPhrases, invertedIndexFile, title = False):
         for pageID in candidates:
             phraseFrequency = 0
             for startingPosition in invertedIndexFile[phrase[0]][pageID]:
-                fullmatch = False
                 for i in range(1, len(phrase)):
                     match = False
                     for tokenPosition in invertedIndexFile[phrase[i]][pageID]:

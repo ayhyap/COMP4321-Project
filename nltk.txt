@@ -1,2 +1,5 @@
-popular
+wordnet
+punkt
+snowball_data
+treebank
 stopwords
