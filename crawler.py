@@ -471,7 +471,7 @@ def crawl(website, limit = 1000000, pages_to_scrape = None, url_check = None):
                 tokensinpage[pageID] = positions
                 page_title_tokenid2page[int(token)] = tokensinpage
             
-            metadata = np.array([page_dict['page_title'],page_dict['page_url'],page_dict['last_modified'],page_dict['page_size'],page_dict['keyword_count'], page_dict['token_maxfreq'], page_dict['page_title_token_maxfreq']])
+            metadata = np.array([page_dict['page_title'],page_dict['page_url'],page_dict['last_modified'],page_dict['page_size'],page_dict['keyword_count'], page_dict['token_maxfreq']])
             metadataDB[pageID] = metadata
             
             scraped_pages += 1

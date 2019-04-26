@@ -19,17 +19,17 @@ token2id = SqliteDict('phase2-token2id.sqlite', journal_mode='OFF')
 page2id = SqliteDict('phase2-page2id.sqlite', journal_mode='OFF')
 metadataDB = SqliteDict('phase2-metadata.sqlite', journal_mode='OFF')
 linksDB = SqliteDict('phase2-links.sqlite', journal_mode='OFF')
-tokenid2page = SqliteDict('phase2-inverted_index.sqlite', journal_mode='OFF')
+invertedIndex = SqliteDict('phase2-inverted_index.sqlite', journal_mode='OFF')
 token_positionsDB = SqliteDict('phase2-token_positions.sqlite', journal_mode='OFF')
 page_title_token_positionsDB = SqliteDict('phase2-page_title_token_positions.sqlite', journal_mode='OFF')
 page_title_inverted_index = SqliteDict('phase2-page_title_inverted_index.sqlite', journal_mode='OFF')
 
 if ham_sandwich:
-    token2id = dict((v,int(k)) for v,k in token2id.items())
-    page2id = dict((v,int(k)) for v,k in page2id.items())
+    # token2id = dict((v,int(k)) for v,k in token2id.items())
+    # page2id = dict((v,int(k)) for v,k in page2id.items())
     metadataDB = dict((int(v),k) for v,k in metadataDB.items())
     linksDB = dict((int(v),k) for v,k in linksDB.items())
-    tokenid2page = dict((int(v),k) for v,k in tokenid2page.items())
+    invertedIndex = dict((int(v),k) for v,k in invertedIndex.items())
     token_positionsDB = dict((int(v),k) for v,k in token_positionsDB.items())
     page_title_token_positionsDB = dict((int(v),k) for v,k in page_title_token_positionsDB.items())
     page_title_inverted_index = dict((int(v),k) for v,k in page_title_inverted_index.items())
@@ -56,7 +56,7 @@ def result():
         scores = defaultdict(int)
         
         start = process_time()
-        searchResultsBody = searchEngine(queryTokens, tokenid2page)
+        searchResultsBody = searchEngine(queryTokens, invertedIndex)
         print(process_time()-start, '\tSE-Body')
         
         start = process_time()
@@ -64,7 +64,7 @@ def result():
         print(process_time()-start, '\tSE-Title')
         
         start = process_time()
-        searchResultsPhraseBody = searchEnginePhrase(queryPhrases, tokenid2page)
+        searchResultsPhraseBody = searchEnginePhrase(queryPhrases, invertedIndex)
         print(process_time()-start, '\tSE-BodyPhrase')
         
         start = process_time()
