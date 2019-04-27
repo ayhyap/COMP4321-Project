@@ -10,25 +10,11 @@ pip3.6 -V
 
 # install packages via pip
 sudo pip3.6 install --upgrade pip
-sudo pip3.6 install numpy
-
-# key-value database
-sudo pip3.6 install sqlitedict
+sudo pip3.6 install -r requirements.txt
 
 # natural language toolkit
-sudo pip3.6 install nltk
 python3.6 -m nltk.downloader wordnet
 python3.6 -m nltk.downloader punkt
 python3.6 -m nltk.downloader snowball_data
 python3.6 -m nltk.downloader treebank
 python3.6 -m nltk.downloader stopwords
-
-# html parser
-sudo pip3.6 install beautifulsoup4
-
-# other stuff
-sudo pip3.6 install python-dateutil
-
-sudo pip3.6 install flask
-
-sudo pip3.6 install gunicorn

@@ -99,9 +99,10 @@ python3.6 webinterface.py
 #
 # ===================
 #
-# We used Python dictionaries to store token counts and outgoing links because 
+# We centered our project around Python dictionaries because
 # they access elements using a hash function on the key, 
 # which allows for average-case constant time element access, better than the log(n) of sorted binary trees.
 #
 # The python module we used for the database (sqlitedict) has limitations on the 
 # complexity of the value objects which prevents it from storing large or multi-type Python dictionaries.
+# So we had to separate the database file into several smaller files.
