@@ -79,9 +79,9 @@ def result():
         for pageID, weight in scores.items():
             scores[pageID] = weight / (int(metadataDB[pageID][4]) * (len(queryTokens)+len(queryPhrases)))
         
-        start = process_time()
+        # start = process_time()
         sortedSearchResults = sortDictionary(scores)
-        print(process_time()-start, '\tSort Scores')
+        # print(process_time()-start, '\tSort Scores')
         
         
         start = process_time()
@@ -147,17 +147,17 @@ def searchEngine(query, invertedIndexFile, title = False):
         if token == 0:
             continue
         
-        start = process_time()
+        # start = process_time()
         try:
             page2positions = invertedIndexFile[token]
         except:
             continue
         
-        print(process_time()-start, '\t\tAccessInvertedIndex')
+        # print(process_time()-start, '\t\tAccessInvertedIndex')
         # df = len(page2positions)
         idf = math.log(N/len(page2positions),2)
         
-        start = process_time()
+        # start = process_time()
         for webPageID, positions in page2positions.items():
             ## maxTermFreq = float(metadataDB[webPageID][6 if title else 5])
             
@@ -167,7 +167,7 @@ def searchEngine(query, invertedIndexFile, title = False):
             # weight = (len(positions) * idf) / float(np.sqrt(len(page_title_token_positionsDB[webPageID])+1) if title else metadataDB[webPageID][5])
             # scores[webPageID] += (len(positions) * idf) / (1 if title else int(metadataDB[webPageID][5]))
             scores[webPageID] += (len(positions) * idf) / (1 if title else int(pageID2tf[webPageID]))
-        print(process_time()-start, '\t\tCalculateScores')
+        # print(process_time()-start, '\t\tCalculateScores')
     return scores
 
 # @jit(nopython=False)
@@ -220,8 +220,6 @@ def searchEnginePhrase(queryPhrases, invertedIndexFile, title = False):
 def sortDictionary(TokenWeights):
     TokenWeightsTuple = [(k, v) for k, v in TokenWeights.items()]
     TokenWeightsTupleSorted = sorted(TokenWeightsTuple, key=lambda x: x[1], reverse=True)
-    #TokenWeightsTupleSorted = TokenWeightsTupleSorted[0:50]
-
     return TokenWeightsTupleSorted
 
 
